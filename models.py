@@ -7,7 +7,10 @@ from sqlalchemy.sql.expression import column
 from sqlalchemy.sql.sqltypes import Float
 
 database_name = "wfh"
-database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+database_path = os.environ['DATABASE_URL']
+
+# set in bash export DATABASE_URL = "postgres://postgres@localhost:5432/wfh"
+
 
 db = SQLAlchemy()
 
