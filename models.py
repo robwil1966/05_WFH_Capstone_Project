@@ -8,6 +8,8 @@ from sqlalchemy.sql.sqltypes import Float
 
 database_name = "wfh"
 database_path = os.environ['DATABASE_URL']
+if database_path.startswith("postgres://"):
+    uri = database_path.replace("postgres://", "postgresql://", 1)
 
 # set in bash export DATABASE_URL = "postgres://postgres@localhost:5432/wfh"
 
