@@ -1,29 +1,33 @@
 import json
+import os
 from flask import request, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get['ALGORITHMS']
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
 
-AUTH0_DOMAIN = 'dev-rnzu8l3g.eu.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'wfh'
-
-## AuthError Exception
+# AuthError Exception
 '''
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
 
-## Auth Header
+# Auth Header
 '''
 Get the access token from the autherization header
 '''
+
+
 def get_token_auth_header():
 
     if "Authorization" in request.headers:
@@ -46,18 +50,16 @@ def get_token_auth_header():
                 'code': 'invalid_header',
                 'description': 'No Token in Header'
             }, 401)
-        
+
         elif len(authsplit) > 2:
             ''' Throw a 401 as not bearer token '''
             raise AuthError({
                 'code': 'invalid_header',
                 'description': 'Authorization header must be a bearer token'
             }, 401)
-        
+
         token = authsplit[1]
         return token
-   
-
 
     ''' Throw a 401 as header missing'''
     raise AuthError({
@@ -66,12 +68,10 @@ def get_token_auth_header():
 
     }, 401)
 
-    
 
 def check_permissions(permission, payload):
-    
     ''' If permissions not included in payload throw 401 '''
-    if 'permissions' not in payload :
+    if 'permissions' not in payload:
         raise AuthError({
             'code': 'invalid_header',
             'description': 'No permissions in token'
@@ -86,9 +86,7 @@ def check_permissions(permission, payload):
 
     return True
 
-'''
-!!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
-'''
+
 def verify_decode_jwt(token):
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
@@ -130,7 +128,7 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description': 'Incorrect claims.'
             }, 401)
         except Exception:
             raise AuthError({
@@ -138,9 +136,10 @@ def verify_decode_jwt(token):
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
+
 
 def requires_auth(permission=''):
     def requires_auth_decorator(f):

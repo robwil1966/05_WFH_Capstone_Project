@@ -78,6 +78,47 @@ The endpoints are explained in more detail below.
 
 Authentication is handled by Auth0. The site will not show any details unless the user has regstered. Further functionality is restricted by the application of user roles. There are two roles WFH-User and WFH-Admin. The admin role allows full permissions to create, edit, delete on all endpoints.
 
+### Roles
+
+Two roles have been defined in in Auth0:-
+
+    WFH-User  - for general users
+    WFH-Admin - administrator role with enhanced privaleges
+
+In addition the following permsissions have been define in Auth0:-
+
+    read:walkers	Read the walkers information	
+    edit:walkers	Edit the walkers information	
+    create:walkers	Create a new walker	
+    update:walkers	Update a walkers information	
+    read:group	    Read a group of walkers information	
+    edit:group	    Edit a groups information	
+    create:group	Create a new group	
+    delete:group	Delete a group	
+    read:event	    Read event details	
+    edit:event	    Edit an events details	
+    delete:event	Delete and event	
+    create:event	Create a new event	
+    read:route	    Read the route information	
+    edit:route	    Edit the route information	
+    create:route	Create a new route	
+    delete:route	Delete a route
+
+The WFH-User is allocated the following permissions:-
+
+    create:event	Create a new event
+    create:group	Create a new group
+    create:route	Create a new route
+    delete:event	Delete and event
+    delete:group	Delete a group	
+    delete:route	Delete a route	
+    edit:event	    Edit an events	
+    edit:group	    Edit a groups	
+    edit:route	    Edit the route information	
+    edit:walkers	Edit the walkers information
+
+The WFH-Admin is allocated all permissions
+
 Two test accounts have been setup:-
 
 wfhuser@gmail.com - which is assigned the WFH-User role
